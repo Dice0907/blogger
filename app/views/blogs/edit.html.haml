@@ -1,0 +1,9 @@
+.contents.row
+  = form_tag("/blogs/#{@blog.id}", method: :patch ) do
+    %h3
+      edit
+    %textarea{cols: "30", name: "text", placeholder: "text", rows: "10"}= @blog.text
+    %input{type: "submit", value: "SAVE"}/
+
+  %a{:href => "/blogs/"} Back to public library
+

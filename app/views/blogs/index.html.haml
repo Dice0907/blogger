@@ -1,0 +1,60 @@
+!!!
+%html
+  %head
+    :css
+      .turbolinks-progress-bar {
+        position: fixed;
+        display: block;
+        top: 0;
+        left: 0;
+        height: 3px;
+        background: #0076ff;
+        z-index: 9999;
+        transition: width 300ms ease-out, opacity 150ms 150ms ease-in;
+        transform: translate3d(0, 0, 0);
+      }
+    / Compiled and minified CSS
+    %link{:rel => "stylesheet"}/
+    / Compiled and minified JavaScript
+    %script{:src => "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"}
+    %script{:crossorigin => "anonymous", :integrity => "sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=", :src => "https://code.jquery.com/jquery-3.3.1.js"}
+    %link{"data-turbolinks-track" => "reload", :href => "/assets/application-bbd9da9f13a509113af9749dad0490804d5c495b2fdb6e09c4fcfbb39d14bbbf.css", :media => "all", :rel => "stylesheet"}/
+    %script{"data-turbolinks-track" => "reload", :src => "/assets/application-9622f0fe63bfad91bdeaa3a771e86262263840678fd66849b311b6cfb3f7cc85.js"}
+    %title MiniApp
+    %meta{:content => "authenticity_token", :name => "csrf-param"}/
+    %meta{:content => "8KYhBXRYmtBATT9Lf7fZVYqPiksHQ+MsnCNJhqn05A/qfq9d+dDPTu0Lle9s8aZK7uyPZP4YcWGqndm4Af5b4A==", :name => "csrf-token"}/
+  %body
+
+
+    %nav.deep-orange{:style => "padding: 0 5px;"}
+      .nav-wrapper
+        %a.brand-logo.center{:href => "/"} public library
+        %ul#nav-mobile.right.hide-on-med-and-down
+          - if user_signed_in?
+            %li
+              %a{"data-method" => "delete", :href => "/users/sign_out", :rel => "nofollow"} Sing out
+            %li
+              %a{:href => "/blogs/new"} Post
+          - else 
+            %li
+              %a{:href => "/users/sign_up"} Sing Up
+            %li
+              %a{:href => "/users/sign_in"} Sing In
+          
+    
+    .contents.row
+  - @blogs.each do |blog|
+    .row
+      .col.s12.m6.offset-m3
+        .card
+          .card-content.deep-orange-text
+            %p= blog.text
+            - if user_signed_in?
+              %li
+                = link_to "delete", "/blogs/#{blog.id}", method: :delete
+              %li
+                = link_to "edit", "/blogs/#{blog.id}/edit", method: :get
+          .card-action
+    .container.center{:style => "margin-bottom: 50px;"}
+
+= paginate(@blogs)
